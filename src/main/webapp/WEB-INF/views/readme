@@ -1,0 +1,82 @@
+스프링 SPRING 프레임 워크
+컨트롤러와 파일을 링크 연결하는법
+
+run 실행
+controller의 value에서 요청 작명
+value ="/"  <- 요청 작명
+
+return "파일명"  <- views 안에 파일명
+
+스프링에서는 jsp 파일 직접 실행해도 404가 뜬다
+>> 파일의 위치를 찾아서 바로 실행하는 것을 스프링에서 막아둠 - 보안 문제
+>> 컨트롤러에 실행을 매핑(등록)한다 (request 매핑)
+>> 컨트롤러를 통한 실행만 가능하므로 프로젝트에서 run
+
+
+-----------------------------------------------------------------------------------------------------
+servlet-context.xml
+
+실제 실행 할 파일의 정보를 저장해 둠
+value="/WEB-INF/views/"  -> jsp 저장위치
+value=".jsp"                    -> 파일확장자  
+
+둘다 원하는 것으로 변경이 가능하다
+
+
+<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" /> 
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+
+
+
+-----------------------------------------------------------------------------------------------------
+1.컨트롤러에서 파일요청 만들기 (매핑)
+2. jsp 파일 만들기 - 하이퍼링크
+3. 확인 > 프로젝트 실행후 링크 실행  > 잘 나오면 ok
+            에러의 경우 컨트롤러와 링크의 오타 여부 확인
+
+
+1.컨트롤러에서 파일요청 만들기 (매핑) ---------------------------------------------
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String index() {  
+	
+		return "index";  // jsp 파일명
+	}
+	
+
+	@RequestMapping(value = "/hello", method = RequestMethod.GET)
+	public String hello() {  
+	
+		return "hello";  // jsp 파일명
+	}
+	
+	
+	
+//      RequestMapping -> 자동완성 사용
+//      임포트
+//      import org.springframework.web.bind.annotation.RequestMapping;
+//      import org.springframework.web.bind.annotation.RequestMethod;
+	
+	
+//	 public String hello(매개변수) {
+//	 접근지정자  타입  밸류이름과 같음
+//	}
+}
+
+
+jsp 파일 만들기 - 하이퍼링크 --------------------------------------------------------------------
+
+하이퍼링크에 이름만 작성 -> 확장자 제외
+
+	<a href="hello">hello 바로가기</a>     
+	<!-- controller의 value = "/hello"
+              return "hello"; --> 
+	<br><br>
+	<a href="team/rank">home 바로가기</a>
+	<!-- controller의 value = "/"
+	     return "index"; -->
+
